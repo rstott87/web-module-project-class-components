@@ -1,6 +1,7 @@
 import React from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
+import './Todo.css';
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -8,6 +9,35 @@ class App extends React.Component {
       tasks: [],
     }
   }
+  handleClearPurchased = ()=> {
+    //1. Capture our click
+    //2. Change our state setState
+    //3. Retain our previous state.
+    //4. change groceries: remove all items where purchased == true
+
+    this.setState({
+      ...this.state,
+      tasks: this.state.tasks.filter(item => {
+        return !item.completed;
+      })
+    });
+  }
+  handleToggleTask = (selectedItem) => {
+    this.setState({
+      ...this.state,
+      tasks: this.state.tasks.map(item => {
+        if(item.id === selectedItem.id) {
+          return({
+            ...item,
+            completed: !item.completed
+          })
+        } else {
+          return item;
+        }
+      })
+    });
+  }
+
   handleAddTask = task =>  {
     const newTask = {
       task: task,
@@ -15,14 +45,14 @@ class App extends React.Component {
       completed: false
     };
 
+
+
     this.setState({
       ...this.state,
       tasks: [...this.state.tasks, newTask]
     });
   }
-  // you will need a place to store your state in this component.
-  // design `App` to be the parent component of your application.
-  // this component is going to take care of state, and any change handlers you need to work with your state
+
   render() {
     return (
       <div>
@@ -32,7 +62,7 @@ class App extends React.Component {
           </div>
           <div>
             <TodoList handleToggleTask={this.handleToggleTask} tasks={this.state.tasks}/>
-            <button>Clear Completed</button>
+            <button onClick={this.handleClearPurchased}className="clear-btn">Clear Purchased</button>
         </div>
       </div>
 
